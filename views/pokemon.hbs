@@ -1,0 +1,7 @@
+<h3>{{data.name}}</h3>
+<img src="{{data.sprites.front_shiny}}">
+<p><bold>Type: </bold>
+{{#each data.types}}
+	{{this.type.name}},
+{{/each}}
+</p>
