@@ -1,38 +1,51 @@
-const express = require("express")
-const bodyParser = require("body-parser")
-const exphbs = require("express-handlebars")
-const Pokedex = require('pokedex-promise-v2');
+const path = require("path");
 
-const app = express()
+const express = require("express");
+const bodyParser = require("body-parser");
+const exphbs = require("express-handlebars");
+const Pokedex = require("pokedex-promise-v2");
+
+const app = express();
 const P = new Pokedex();
 
 // express-handlebars setup
-app.engine('hbs', exphbs({
-    defaultLayout: 'main',
-    extname: '.hbs'
-}));
+app.engine(
+	"hbs",
+	exphbs({
+		defaultLayout: "main",
+		extname: ".hbs",
+	})
+);
 
-app.set('view engine', 'hbs');
-app.use(bodyParser.urlencoded({extended:true}))
+app.set("view engine", "hbs");
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // suppoet encoded bodies
 
-app.get("/", (req,res)=>{
-	res.render("home")
-})
+// Static folder
+app.use(express.static(path.join(__dirname, "public")));
 
-app.post("/submit", async (req,res)=>{
-	const searchedPokemon = req.body.pokename.trim()
-	try{
-		const pokeData = await P.getPokemonByName(searchedPokemon)
-		console.log(pokeData)
-		res.render("pokemon",{
-			data: pokeData
-		})
-	}catch(e){
-		console.log(e)
-	}
-})
+app.get("/", (req, res) => {
+	res.render("home");
+});
 
-const PORT = 3000
-app.listen(PORT,()=>{
-	console.log(`Server started at Port ${PORT}`)
-})
+app.post("/pokemon", (req, res) => {
+	const searchedPokemon = req.body.pokename.trim();
+	res.redirect(`/pokemon/${searchedPokemon}`);
+});
+
+app.get("/pokemon/:name", async (req, res) => {
+	const pokeData = await P.getPokemonByName(req.params.name);
+	res.render("pokemon", {
+		name: pokeData.name,
+		// img: pokeData.sprites.other.dream_world.front_default,
+		img: pokeData.sprites.other["official-artwork"].front_default,
+		stats: pokeData.stats, // array[hp,atk,def,sp-atk,sp-def,speed].base_stat
+		weight: pokeData.weight,
+		height: pokeData.height,
+	});
+});
+
+const PORT = 3000;
+app.listen(PORT, () => {
+	console.log(`Server started at Port ${PORT}`);
+});

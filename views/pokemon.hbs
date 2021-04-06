@@ -1,7 +1,6 @@
-<h3>{{data.name}}</h3>
-<img src="{{data.sprites.front_shiny}}">
-<p><bold>Type: </bold>
-{{#each data.types}}
-	{{this.type.name}},
-{{/each}}
-</p>
+<div class="p-4">
+	<h3 class="text-2xl font-bold text-gray-500">{{name}}</h3>
+	<img class="h-36 w-40" src="{{img}}" />
+	<p>Height: {{height}}</p>
+	<p>Weight: {{weight}}</p>
+</div>
