@@ -34,15 +34,28 @@ app.post("/pokemon", (req, res) => {
 });
 
 app.get("/pokemon/:name", async (req, res) => {
+	try{
+		const baseStats = {}
 	const pokeData = await P.getPokemonByName(req.params.name);
+
+	pokeData.stats.forEach((s)=>{
+		baseStats[s.stat.name] = s.base_stat
+	}) // to dig out each stats from json
+
 	res.render("pokemon", {
 		name: pokeData.name,
-		// img: pokeData.sprites.other.dream_world.front_default,
 		img: pokeData.sprites.other["official-artwork"].front_default,
-		stats: pokeData.stats, // array[hp,atk,def,sp-atk,sp-def,speed].base_stat
+		stats: baseStats,
 		weight: pokeData.weight,
 		height: pokeData.height,
+		types: pokeData.types
 	});
+}catch(e){
+	res.render("error",{
+		title : "404",
+		msg : "Pokemon not found! please search for correct one"
+	})
+}
 });
 
 const PORT = 3000;

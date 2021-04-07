@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn{
+	@apply font-semibold uppercase bg-electric-blue text-white py-2 px-4 rounded-full hover:opacity-80 hover:shadow-inner;
+}
+
+.title-tag{
+	@apply text-gray-600 font-bold;
+}
