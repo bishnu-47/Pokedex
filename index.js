@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/pokemon", (req, res) => {
-	const searchedPokemon = req.body.pokename.trim();
+	const searchedPokemon = req.body.pokename.toLowerCase().trim();
 	res.redirect(`/pokemon/${searchedPokemon}`);
 });
 
@@ -43,11 +43,12 @@ app.get("/pokemon/:name", async (req, res) => {
 	}) // to dig out each stats from json
 
 	res.render("pokemon", {
+		id: pokeData.id,
 		name: pokeData.name,
 		img: pokeData.sprites.other["official-artwork"].front_default,
 		stats: baseStats,
-		weight: pokeData.weight,
-		height: pokeData.height,
+		weight: (parseInt(pokeData.weight)/10),
+		height: (parseInt(pokeData.height)/10),
 		types: pokeData.types
 	});
 }catch(e){
@@ -57,6 +58,13 @@ app.get("/pokemon/:name", async (req, res) => {
 	})
 }
 });
+
+app.get("/*",(req,res)=>{
+	res.render("error",{
+		title : "404",
+		msg : "Page not found!"
+	})
+})
 
 const PORT = 3000;
 app.listen(PORT, () => {

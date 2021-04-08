@@ -4,11 +4,12 @@
 	<img class="h-36 w-40 mx-auto mb-4" src="{{img}}" />
 
 	{{#each types}}
-	<p class="bg-gold text-gray-200 max-w-min px-2 py-1 rounded-full uppercase text-xs font-semibold inline">{{this.type.name}}</p>
+	<p class="bg-gold text-gray-200 max-w-min px-2 py-1 rounded-full uppercase text-xs font-semibold inline hover:shadow-md">{{this.type.name}}</p>
 	{{/each}}
 
-	<p class="mt-4"><span class="title-tag">Height:</span> {{height}}</p>
-	<p><span class="title-tag">Weight:</span> {{weight}}</p>
+	<p class="mt-4"><span class="title-tag">ID:</span> {{id}}</p>
+	<p ><span class="title-tag">Height:</span> {{height}}m</p>
+	<p><span class="title-tag">Weight:</span> {{weight}}kg</p>
 
 	<div class="border-gray-300 border-2 p-4 my-4 rounded-lg">
 		<h5 class="text-xl font-bold text-gray-500 uppercase mb-2">Stats</h5>
